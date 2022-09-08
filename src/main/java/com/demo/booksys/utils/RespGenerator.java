@@ -10,7 +10,7 @@ public class RespGenerator {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static BaseResponse returnOK(Object data) {
-        return new BaseResponse("200", "接口调用成功!", data);
+        return new BaseResponse("200", "Success", data);
     }
 
     /**
