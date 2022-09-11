@@ -1,7 +1,291 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper  namespace="com.demo.booksys.mapper.BookMapper">
-    <select id="list" resultType="com.demo.booksys.domain.Book">
-            select * from `book`
-    </select>
+<mapper namespace="com.demo.booksys.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="com.demo.booksys.domain.Book">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="book_type" jdbcType="VARCHAR" property="bookType" />
+    <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, book_type, book_name, publisher, author, publish_time, description, image, `location`, 
+    `status`
+  </sql>
+  <select id="selectByExample" parameterType="com.demo.booksys.domain.BookExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.demo.booksys.domain.BookExample">
+    delete from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.booksys.domain.Book">
+    insert into book (id, book_type, book_name, 
+      publisher, author, publish_time, 
+      description, image, `location`, 
+      `status`)
+    values (#{id,jdbcType=INTEGER}, #{bookType,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR}, 
+      #{publisher,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.booksys.domain.Book">
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bookType != null">
+        book_type,
+      </if>
+      <if test="bookName != null">
+        book_name,
+      </if>
+      <if test="publisher != null">
+        publisher,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="location != null">
+        `location`,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookType != null">
+        #{bookType,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null">
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null">
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.booksys.domain.BookExample" resultType="java.lang.Long">
+    select count(*) from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update book
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookType != null">
+        book_type = #{record.bookType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookName != null">
+        book_name = #{record.bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publisher != null">
+        publisher = #{record.publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publishTime != null">
+        publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null">
+        `location` = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update book
+    set id = #{record.id,jdbcType=INTEGER},
+      book_type = #{record.bookType,jdbcType=VARCHAR},
+      book_name = #{record.bookName,jdbcType=VARCHAR},
+      publisher = #{record.publisher,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      `location` = #{record.location,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.booksys.domain.Book">
+    update book
+    <set>
+      <if test="bookType != null">
+        book_type = #{bookType,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null">
+        book_name = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null">
+        publisher = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        `location` = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.booksys.domain.Book">
+    update book
+    set book_type = #{bookType,jdbcType=VARCHAR},
+      book_name = #{bookName,jdbcType=VARCHAR},
+      publisher = #{publisher,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      `location` = #{location,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

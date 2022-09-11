@@ -1,4 +1,4 @@
-package com.demo.booksys.utils;
+package com.demo.booksys.common;
 
 public class RespGenerator {
     /**
@@ -10,7 +10,7 @@ public class RespGenerator {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static BaseResponse returnOK(Object data) {
-        return new BaseResponse("200", "Success", data);
+        return new BaseResponse("200", "Success!", data);
     }
 
     /**

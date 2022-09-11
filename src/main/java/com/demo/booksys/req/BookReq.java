@@ -1,11 +1,10 @@
-package com.demo.booksys.domain;
-
+package com.demo.booksys.req;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class Book {
+public class BookReq {
     @ApiModelProperty(value = "书籍id")
     private String id;
     @ApiModelProperty(value = "书籍名称")
@@ -26,12 +25,5 @@ public class Book {
     private String bookType;
     @ApiModelProperty(value = "图片")
     private String image;
+
 }
-
-
-
-
-
-
-
-

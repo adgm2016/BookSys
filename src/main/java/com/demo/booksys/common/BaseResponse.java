@@ -1,4 +1,4 @@
-package com.demo.booksys.utils;
+package com.demo.booksys.common;
 
 import lombok.Data;
 

@@ -1,11 +1,10 @@
 package com.demo.booksys.controller;
 
+import com.demo.booksys.domain.Book;
 import com.demo.booksys.domain.User;
-import com.demo.booksys.domain.UserExample;
-import com.demo.booksys.service.BookService;
 import com.demo.booksys.service.UserService;
-import com.demo.booksys.utils.BaseResponse;
-import com.demo.booksys.utils.RespGenerator;
+import com.demo.booksys.common.BaseResponse;
+import com.demo.booksys.common.RespGenerator;
 import com.demo.booksys.utils.TokenUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
@@ -52,6 +51,10 @@ public class UserController {
 
         return RespGenerator.returnOK(userService.getAllUser());
     }
-
+    @ApiOperation(value = "新增用户")
+    @GetMapping("/addUser")
+    public BaseResponse<Book> insertSelective(User user) {
+        return RespGenerator.returnOK(userService.insertSelective(user));
+    }
 
 }
