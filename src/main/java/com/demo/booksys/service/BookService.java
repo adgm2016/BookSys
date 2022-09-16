@@ -7,6 +7,8 @@ import com.demo.booksys.mapper.BookMapper;
 import com.demo.booksys.req.BookReq;
 import com.demo.booksys.resp.BookResp;
 import com.demo.booksys.utils.CopyUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class BookService {
 
 
     public List<BookResp> list(BookReq req) {
+        PageHelper.startPage(1,3);
         BookExample bookExample = new BookExample();
 //        BookExample.Criteria criteria = bookExample.createCriteria();
         BookExample.Criteria criteria = bookExample.createCriteria();
@@ -35,6 +38,11 @@ public class BookService {
 
 
         List<Book> bookList = bookMapper.selectByExample(bookExample);
+
+
+        //分页
+        PageInfo<Book> pageInfo = new PageInfo<>(bookList);
+        
 
 //        List<BookResp> respList = new ArrayList<>();
 //        for (Book book : bookList) {
